@@ -6,16 +6,28 @@
 ///
 /// TASK DESCRIPTION
 ///
-/// Write a variadic function `int sum(int count, ...)` that returns the sum of 
+/// Write a variadic function `int sum(int count, ...)` that returns the sum of
 /// 'count' numbers.
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <cstdarg>
 #include <iostream>
 
-int main()
-{
-    // Your code here
+int sum(int count, ...) {
+  va_list args;
+  va_start(args, count);
+  int result = 0;
+  for (int i = 0; i < count; ++i) {
+    result += va_arg(args, int);
+  }
+  va_end(args);
+  return result;
+}
 
-    return 0;
+int main() {
+  int total = sum(5, 1, 2, 3, 4, 5);
+  std::cout << "Total: " << total << std::endl;
+
+  return 0;
 }

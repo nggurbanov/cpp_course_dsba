@@ -6,16 +6,23 @@
 ///
 /// TASK DESCRIPTION
 ///
-/// Write a program that reads two integers from the standard input and calculates
-/// their sum using pointers. Print the result.
+/// Write a program that reads two integers from the standard input and
+/// calculates their sum using pointers. Print the result.
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
 
-int main()
-{
-    // Your code here
+int main() {
+  int num1, num2;
+  int *ptr1 = &num1;
+  int *ptr2 = &num2;
 
-    return 0;
+  std::cin >> *ptr1 >> *ptr2;
+
+  int sum = *ptr1 + *ptr2;
+
+  std::cout << "Sum: " << sum << "\n";
+
+  return 0;
 }

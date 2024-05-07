@@ -8,11 +8,19 @@
 /// Create a function that copies the content of one file to another file.
 ///
 ///////////////////////////////////////////////////////////////////////////////
-#include <fstream> 
+#include <fstream>
 
-void copyFile(const std::string& sourceFilePath, const std::string& destinationFilePath);
+void copyFile(const std::string &sourceFilePath,
+              const std::string &destinationFilePath) {
+  std::ifstream inFile(sourceFilePath);
+  std::ofstream outFile(destinationFilePath);
+  std::string line;
+  while (getline(inFile, line)) {
+    outFile << line << std::endl;
+  }
+}
 
 int main() {
-    copyFile("source.txt", "destination.txt");
-    return 0;
+  copyFile("source.txt", "destination.txt");
+  return 0;
 }

@@ -13,9 +13,16 @@
 
 #include <iostream>
 
-int main()
-{
-    // Your code here
+void print(int value) { std::cout << "Integer: " << value << std::endl; }
 
-    return 0;
+void print(double value) { std::cout << "Double: " << value << std::endl; }
+
+int main() {
+  int i = 42;
+  double d = 3.14;
+
+  print(i);
+  print(d);
+
+  return 0;
 }
