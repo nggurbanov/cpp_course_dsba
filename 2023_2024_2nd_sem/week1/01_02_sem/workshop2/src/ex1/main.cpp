@@ -14,12 +14,25 @@
 
 #include <iostream>
 
-// the entrypoint of the application
-int main()
-{
-    std::cout << "Hello world!";
+int main() {
+  std::cout << "Hello world!";
 
-    // TODO: place your code starting from this line
+  // TODO: place your code starting from this line
+  size_t charSize = sizeof(char);
+  size_t shortSize = sizeof(short);
+  size_t intSize = sizeof(int);
+  size_t longSize = sizeof(long);
+  size_t longLongSize = sizeof(long long);
+  size_t doubleSize = sizeof(double);
+  size_t boolSize = sizeof(bool);
 
-    return 0;
+  std::cout << "\nSize of char: " << charSize << " bytes";
+  std::cout << "\nSize of short: " << shortSize << " bytes";
+  std::cout << "\nSize of int: " << intSize << " bytes";
+  std::cout << "\nSize of long: " << longSize << " bytes";
+  std::cout << "\nSize of long long: " << longLongSize << " bytes";
+  std::cout << "\nSize of double: " << doubleSize << " bytes";
+  std::cout << "\nSize of bool: " << boolSize << " bytes";
+
+  return 0;
 }

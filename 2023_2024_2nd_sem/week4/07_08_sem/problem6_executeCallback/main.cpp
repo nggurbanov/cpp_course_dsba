@@ -6,16 +6,24 @@
 ///
 /// TASK DESCRIPTION
 ///
-/// Write a function `void executeCallback(void (*callback)())` that takes a 
+/// Write a function `void executeCallback(void (*callback)())` that takes a
 /// function pointer and executes the callback function.
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
 
-int main()
-{
-    // Your code here
+// Function prototype
+void callback();
 
-    return 0;
+// Function to execute the callback
+void executeCallback(void (*callback)()) { callback(); }
+
+// Callback function
+void callback() { std::cout << "Callback function executed!" << std::endl; }
+
+int main() {
+  executeCallback(callback);
+
+  return 0;
 }

@@ -5,16 +5,34 @@
 ///
 /// TASK DESCRIPTION
 ///
-/// Create a program to extract a specific line number from a text file and write it to another file.
+/// Create a program to extract a specific line number from a text file and
+/// write it to another file.
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <fstream>
 #include <iostream>
 #include <string>
 
-void extractLineToFile(const std::string& inputFilePath, const std::string& outputFilePath, int lineNum);
-int main() {
-    extractLineToFile("input.txt", "specific_line.txt", 3);
-    return 0;
+void extractLineToFile(const std::string &inputFilePath,
+                       const std::string &outputFilePath, int lineNum) {
+  std::ifstream inputFile(inputFilePath);
+  std::ofstream outputFile(outputFilePath);
+  std::string line;
+  int currentLineNum = 1;
+
+  while (std::getline(inputFile, line)) {
+    if (currentLineNum == lineNum) {
+      outputFile << line << '\n';
+      break;
+    }
+    currentLineNum++;
+  }
+
+  inputFile.close();
+  outputFile.close();
 }
 
+int main() {
+  extractLineToFile("input.txt", "specific_line.txt", 3);
+  return 0;
+}

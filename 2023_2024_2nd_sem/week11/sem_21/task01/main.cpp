@@ -21,46 +21,41 @@
 // Implements the area() function to calculate the area of a rectangle.
 
 class Shape {
- protected:
+private:
   double x, y;
- public:
-  Shape(double x, double y) : x(x), y(y) {}
-  virtual double area() const = 0;
-  virtual void print() const = 0;
+
+public:
+  virtual double area() {};
+  Shape(int x, int y) { x = x, y = y; }
 };
+
 class Circle : public Shape {
- public:
-  Circle(double r, double x, double y) :Shape(x, y) {
-    radius = r;
-  }
-  double area() const  { return 3.14 * radius * radius; }
-  void print() const {
-    std::cout << "Circle: r = " << radius << " area = " << area() << '\n';
-  }
- private:
-  double radius;
+private:
+  double r;
+
+public:
+  double area() { return M_PI * r * r; }
+  Shape(double x, double y, double r) { x = x, y = y; };
 };
+
 class Rectangle : public Shape {
- public:
-  Rectangle(double s1, double s2, double x, double y) : Shape(x, y) {
-    a = s1; b = s2;
+private:
+  double width, height;
+
+public:
+  double area() { return width * height; }
+  void setDim(int x, int y) {
+    width = x;
+    height = y;
   }
-  double area() const  { return  a * b; }
-  void print() const {
-    std::cout << "Rectangle: a = " << a << " b = " << b << " area = " << area() << '\n';
-  }
- private:
-  double a, b;
 };
+
 int main() {
-  std::vector<Shape*> v;
-  for (int i = 0; i < 10; ++i) {
-    if (rand() % 2 == 0) {
-      v.push_back(new Circle(rand() % 10, rand() % 10, rand() % 10));
-    } else {
-      v.push_back(new Rectangle(rand() % 10, rand() % 10, rand() % 10, rand() % 10));
-    }
-    v[i]->print();
-  }
-  return 0;
+  Circle krug(1, 2);
+  krug.setRadius(2);
+  std::cout << krug.area() << std::endl;
+
+  Rectangle p;
+  p.setDim(2, 5);
+  std::cout << p.area() << std::endl;
 }

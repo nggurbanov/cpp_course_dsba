@@ -20,7 +20,8 @@ void swap1(int *a, int *b) {
 }
 
 int main() {
-  int el1 = 5, el2 = 10;
+  int el1, el2;
+  std::cin >> el1 >> el2;
   std::cout << el1 << ' ' << el2 << '\n';
   swap1(&el1, &el2);
   std::cout << el1 << ' ' << el2 << '\n';

@@ -6,17 +6,22 @@
 ///
 /// TASK DESCRIPTION
 ///
-/// Write a program that reads an integer n and a position k from the standard input.
-/// The program should check whether the k-th bit of n is set to 1 (i.e., it prints 
-/// "Yes" or "No" accordingly).
+/// Write a program that reads an integer n and a position k from the standard
+/// input. The program should check whether the k-th bit of n is set to 1 (i.e.,
+/// it prints "Yes" or "No" accordingly).
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
 
-int main()
-{
-    // Your code here
+int main() {
+  int n, k;
+  std::cin >> n >> k;
 
-    return 0;
+  if ((n & (1 << (k - 1))) != 0)
+    std::cout << "Yes\n";
+  else
+    std::cout << "No\n";
+
+  return 0;
 }

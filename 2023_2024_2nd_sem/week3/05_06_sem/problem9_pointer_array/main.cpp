@@ -14,19 +14,23 @@
 #include <iostream>
 
 void plus100(int *arr, int n) {
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < n; i++)
     arr[i] += 100;
 }
 
 int main() {
-  int *arr = new int[10];
-  for (int i = 0; i < 10; i++)
-    arr[i] = i * i;
-  for (int i = 0; i < 10; i++)
-    std::cout << arr[i] << ' ';
-  plus100(arr, 10);
-  std::cout << '\n';
-  for (int i = 0; i < 10; i++)
-    std::cout << arr[i] << ' ';
+  int n;
+  std::cin >> n;
+  int *arr = new int[n];
+  for (int i = 0; i < n; i++)
+    std::cin >> arr[i];
+  int *ptr = arr;
+  int count = 0;
+  while (ptr < arr + n) {
+    count++;
+    ptr++;
+  }
+  std::cout << "Count: " << count << '\n';
+  delete[] arr;
   return 0;
 }

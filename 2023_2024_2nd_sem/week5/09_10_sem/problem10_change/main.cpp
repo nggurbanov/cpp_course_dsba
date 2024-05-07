@@ -5,16 +5,33 @@
 ///
 /// TASK DESCRIPTION
 ///
-///Write a program that reads a text file, converts all lowercase letters to uppercase, and writes the result to a new file.
+/// Write a program that reads a text file, converts all lowercase letters to
+/// uppercase, and writes the result to a new file.
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <cctype> // For toupper()
 #include <fstream>
 #include <iostream>
-#include <cctype> // For toupper()
 
-void convertToLowercase(const std::string& inputFilePath, const std::string& outputFilePath);
+void convertToLowercase(const std::string &inputFilePath,
+                        const std::string &outputFilePath) {
+  std::ifstream inputFile(inputFilePath);
+  std::ofstream outputFile(outputFilePath);
+
+  if (inputFile.is_open() && outputFile.is_open()) {
+    std::string line;
+    while (std::getline(inputFile, line)) {
+      for (char &c : line) {
+        c = toupper(c);
+      }
+      outputFile << line << '\n';
+    }
+    inputFile.close();
+    outputFile.close();
+  }
+}
 
 int main() {
-    convertToLowercase("input.txt", "output_uppercase.txt");
-    return 0;
+  convertToLowercase("input.txt", "output_uppercase.txt");
+  return 0;
 }

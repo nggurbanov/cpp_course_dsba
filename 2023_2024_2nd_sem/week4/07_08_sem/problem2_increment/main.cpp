@@ -6,16 +6,19 @@
 ///
 /// TASK DESCRIPTION
 ///
-/// Write a function `void increment(int &value)` 
-/// that increments the value of 
+/// Write a function `void increment(int &value)`
+/// that increments the value of
 /// the passed integer by 1.
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
 
-int main()
-{
+void increment(int &value) { value++; }
 
-    return 0;
+int main() {
+  int x = 5;
+  increment(x);
+  std::cout << "x is now " << x << std::endl;
+  return 0;
 }

@@ -33,7 +33,6 @@
 //             {"url", "https://en.wikipedia.org/wiki/LaTeX"}};
 
 
-
 //     std::map<std::string, std::string> dataArticle = {
 //             {"key", "{hdrc}"},
 //             {"title", "Gradient domain high dynamic range compression"},
@@ -91,31 +90,27 @@
 // }
 
 
-
 // void test4()
 // {
 //     std::map<std::string, Citation*> citations;
 
-//     std::map<std::string, std::string> dataWeb = {
-//             {"key", "{latex2023}"},
-//             {"title", "LaTeX"},
-//             {"year", "2023"},
-//             {"url", "https://en.wikipedia.org/wiki/LaTeX"}};
+
+//     std::map<std::string, std::string> dataWeb = {{"key", "{wikiarticle2}"},
+//                                                   {"title", "Important article"},
+//                                                   {"year", "2023"},
+//                                                   {"url", "https://en.wikipedia.org/wiki/Important"}};
+//     std::map<std::string, std::string> dataArticle = {{"key", "{lastname2022a}"},
+//                                                       {"title", "Gradient domain high dynamic range compression"},
+//                                                       {"year", "2022"},
+//                                                       {"journal", "Computer graphics and interactive techniques"},
+//                                                       {"lastname", "Lastname"},
+//                                                       {"firstname", "Person"}};
 
 //     addCitation(citations, CitationType::WebPage, dataWeb);
 
 
-//     std::map<std::string, std::string> dataArticle = {
-//             {"key", "{hdrc}"},
-//             {"title", "Gradient domain high dynamic range compression"},
-//             {"year", "2002"},
-//             {"journal", "Computer graphics and interactive techniques"},
-//             {"lastname", "Fattal"},
-//             {"firstname", "Raanan"}};
-
-
 //     addCitation(citations, CitationType::Article, dataArticle);
-//     std::string text = "Long text with citations {latex2023}.\nThis has been referenced in {hdrc}.\n";
+//     std::string text = "This point was already researched in {lastname2022a}.\n Another point was raised in {wikiarticle2}.";
 //     insertInlineCitations(text, citations);
 //     std::cout << text;
 //     for (std::map<std::string, Citation*>::value_type& citation: citations)
@@ -125,38 +120,39 @@
 // }
 
 
-
-// void test5()
-// {
-//     std::map<std::string, Citation*> citations;
-
-//     std::map<std::string, std::string> dataWeb = {
-//             {"key", "{latex2023}"},
-//             {"title", "LaTeX"},
-//             {"year", "2023"},
-//             {"url", "https://en.wikipedia.org/wiki/LaTeX"}};
-
-//     addCitation(citations, CitationType::WebPage, dataWeb);
+void test5()
+{
 
 
-//     std::map<std::string, std::string> dataArticle = {
-//             {"key", "{hdrc}"},
-//             {"title", "Gradient domain high dynamic range compression"},
-//             {"year", "2002"},
-//             {"journal", "Computer graphics and interactive techniques"},
-//             {"lastname", "Fattal"},
-//             {"firstname", "Raanan"}};
+    std::map<std::string, Citation*> citations;
+
+    std::map<std::string, std::string> dataWeb = {
+            {"key", "{latex2023}"},
+            {"title", "LaTeX"},
+            {"year", "2023"},
+            {"url", "https://en.wikipedia.org/wiki/LaTeX"}};
+
+    addCitation(citations, CitationType::WebPage, dataWeb);
 
 
-//     addCitation(citations, CitationType::Article, dataArticle);
-//     std::string text = "Long text with citations {latex2023}.\nThis has been referenced in {hdrc}.\n";
-//     printBibliographyAppearance(text, citations);
-//     std::cout << text;
-//     for (std::map<std::string, Citation*>::value_type& citation: citations)
-//     {
-//         delete citation.second;
-//     }
-// }
+    std::map<std::string, std::string> dataArticle = {
+            {"key", "{hdrc}"},
+            {"title", "Gradient domain high dynamic range compression"},
+            {"year", "2002"},
+            {"journal", "Computer graphics and interactive techniques"},
+            {"lastname", "Fattal"},
+            {"firstname", "Raanan"}};
+
+
+    addCitation(citations, CitationType::Article, dataArticle);
+    std::string text = "Long text with citations {latex2023}.\nThis has been referenced in {hdrc}.\n";
+    printBibliographyAppearance(text, citations);
+    std::cout << text;
+    for (std::map<std::string, Citation*>::value_type& citation: citations)
+    {
+        delete citation.second;
+    }
+}
 
 
 // void test6()
@@ -201,9 +197,9 @@ int main()
     // test2();
     // test3();
     // test4();
-    // test5();
+    test5();
     // test6();
 
-    
+
     return 0;
 }
