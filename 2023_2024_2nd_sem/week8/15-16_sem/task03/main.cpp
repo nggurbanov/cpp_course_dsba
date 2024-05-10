@@ -31,6 +31,7 @@ Saving the updated database to a file.
 #include <fstream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 struct Student {
     std::string name;
@@ -48,7 +49,65 @@ struct Student {
     }
 };
 
+void readRecordsFromFile(const std::string& filename, std::vector<Student>& students) {
+    std::ifstream infile(filename);
+    if (infile.is_open()) {
+        Student temp;
+        while (infile >> temp) {
+            students.push_back(temp);
+        }
+        infile.close();
+    } else {
+        std::cerr << "Unable to open file: " << filename << std::endl;
+    }
+}
 
+void addRecord(std::vector<Student>& students) {
+    Student newStudent;
+    std::cout << "Enter the name, age, and grade of the new student: ";
+    std::cin >> newStudent;
+    students.push_back(newStudent);
+    std::cout << "New student added: " << newStudent << std::endl;
+}
+
+void deleteRecord(std::vector<Student>& students, int index) {
+    if (index >= 0 && index < students.size()) {
+        std::cout << "Deleting student: " << students[index] << std::endl;
+        students.erase(students.begin() + index);
+    } else {
+        std::cerr << "Invalid index: " << index << std::endl;
+    }
+}
+
+void modifyRecord(std::vector<Student>& students, int index) {
+    if (index >= 0 && index < students.size()) {
+        Student modifiedStudent;
+        std::cout << "Enter the new name, age, and grade for student at index " << index << ": ";
+        std::cin >> modifiedStudent;
+        students[index] = modifiedStudent;
+        std::cout << "Student modified: " << students[index] << std::endl;
+    } else {
+        std::cerr << "Invalid index: " << index << std::endl;
+    }
+}
+
+void displayRecords(const std::vector<Student>& students) {
+    for (const auto& student : students) {
+        std::cout << student << std::endl;
+    }
+}
+
+void writeRecordsToFile(const std::string& filename, const std::vector<Student>& students) {
+    std::ofstream outfile(filename);
+    if (outfile.is_open()) {
+        for (const auto& student : students) {
+            outfile << student << '\n';
+        }
+        outfile.close();
+    } else {
+        std::cerr << "Unable to open file: " << filename << std::endl;
+    }
+}
 
 int main() {
     std::vector<Student> students;
@@ -57,6 +116,7 @@ int main() {
 
     addRecord(students);
     deleteRecord(students, 1);
+    modifyRecord(students, 2);
     displayRecords(students);
 
     writeRecordsToFile("updated_students.txt", students);

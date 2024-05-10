@@ -29,21 +29,45 @@ class Shape {
   virtual double area() const = 0;
 };
 
+class Circle : public Shape {
+ private:
+  double radius;
+
+ public:
+  Circle(double x, double y, double radius)
+      : Shape(x, y), radius(radius) {}
+  double area() const override {
+    return M_PI * radius * radius;
+  }
+};
+
+class Rectangle : public Shape {
+ private:
+  double width, height;
+
+ public:
+  Rectangle(double x, double y, double width, double height)
+      : Shape(x, y), width(width), height(height) {}
+  double area() const override {
+    return width * height;
+  }
+};
 
 int main() {
   srand(static_cast<unsigned int>(time(nullptr)));
 
-  vector<Shape *> circles;
+  vector<Shape *> shapes;
 
   for (int i = 0; i < 10; ++i) {
     if (rand() % 2 == 0)
-      circles.push_back(new Circle(0, 0, rand() % 10 + 1));
+      shapes.push_back(new Circle(0, 0, rand() % 10 + 1));
     else
-      circles.push_back(new Rectangle(0, 0, rand() % 10 + 1, rand() % 10 + 1));
+      shapes.push_back(new Rectangle(0, 0, rand() % 10 + 1, rand() % 10 + 1));
   }
 
-  for (const auto &circle : circles) {
-    cout << "Area: " << circle->area() << endl;
+  for (const auto &shape : shapes) {
+    cout << "Area: " << shape->area() << endl;
+    delete shape;
   }
 
   return 0;

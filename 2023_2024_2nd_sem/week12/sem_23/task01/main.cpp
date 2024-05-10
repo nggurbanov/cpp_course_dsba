@@ -1,6 +1,3 @@
-#include <iostream>
-
-
 /*
 В рамках организации благотворительного марафона, необходимо 
 создать программу для регистрации участников, которая строго 
@@ -42,22 +39,40 @@
 */
 
 #include <iostream>
-#include <exception>
+#include <stdexcept>
+#include <string>
 
+class AgeRestrictionException : public std::runtime_error {
+public:
+    explicit AgeRestrictionException(const std::string& message)
+        : std::runtime_error(message) {}
+};
 
+void registerParticipant(int age, const std::string& distance) {
+    if (age < 18 || age > 60) {
+        throw AgeRestrictionException("Ваш возраст не соответствует требованиям для участия в марафоне.");
+    }
+    std::cout << "Регистрация успешно завершена!" << std::endl;
+}
 
 int main() {
-  try {
-    registerParticipant(17);
-  } catch (AgeRestrictionException& e) {
-    std::cout << "Ошибка: " << e.what() << std::endl;
-  }
+    int age;
+    std::string distance;
 
-  try {
-    registerParticipant(50);
-  } catch (AgeRestrictionException& e) {
-    std::cout << "Ошибка: " << e.what() << std::endl;
-  }
+    std::cout << "Введите ваш возраст: ";
+    if (!(std::cin >> age)) {
+        std::cerr << "Ошибка: некорректный ввод." << std::endl;
+        return 1;
+    }
 
-  return 0;
+    std::cout << "Выберите дистанцию (5km, 10km, 21km): ";
+    std::cin >> distance;
+
+    try {
+        registerParticipant(age, distance);
+    } catch (const AgeRestrictionException& e) {
+        std::cerr << "Ошибка: " << e.what() << std::endl;
+    }
+
+    return 0;
 }
