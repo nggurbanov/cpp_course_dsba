@@ -1,10 +1,3 @@
-#include <chrono>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <string>
-
 /*
 Develop a flexible logging system that supports logging messages to different outputs: a file, a database,
  and a network. Your task is to design a base `Logger` class with a virtual method for logging messages. Then,
@@ -36,14 +29,91 @@ This task will test your ability to use polymorphism, design patterns (specifica
  management in C++.
  * */
 
+#include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include <string>
+
+enum class LoggerType {
+  FILE,
+  DATABASE,
+  NETWORK
+};
+
+class Logger {
+public:
+  virtual ~Logger() = default;
+  virtual void logMessage(const std::string& message) = 0;
+};
+
+class FileLogger : public Logger {
+public:
+  FileLogger(const std::string& filename) : filename_(filename) {}
+
+  void logMessage(const std::string& message) override {
+    std::ofstream file(filename_, std::ios_base::app);
+    if (!file.is_open()) {
+      std::cerr << "Error opening file: " << filename_ << std::endl;
+      return;
+    }
+    file << getTimestamp() << " - " << message << std::endl;
+  }
+
+private:
+  std::string filename_;
+};
+
+class DatabaseLogger : public Logger {
+public:
+  void logMessage(const std::string& message) override {
+    std::cout << "Logging to database: " << message << std::endl;
+  }
+};
+
+class NetworkLogger : public Logger {
+public:
+  void logMessage(const std::string& message) override {
+    std::cout << "Logging over network: " << message << std::endl;
+  }
+};
+
+class LoggerFactory {
+public:
+  static std::unique_ptr<Logger> createLogger(LoggerType type, const std::string& filename = "") {
+    switch (type) {
+      case LoggerType::FILE:
+        return std::make_unique<FileLogger>(filename);
+      case LoggerType::DATABASE:
+        return std::make_unique<DatabaseLogger>();
+      case LoggerType::NETWORK:
+        return std::make_unique<NetworkLogger>();
+      default:
+        throw std::invalid_argument("Invalid logger type");
+    }
+  }
+};
+
+std::string getTimestamp() {
+  auto now = std::chrono::system_clock::now();
+  auto timeSinceEpoch = now.time_since_epoch();
+  auto secondsSinceEpoch = std::chrono::duration_cast<std::chrono::seconds>(timeSinceEpoch).count();
+  std::time_t time = std::time_t(secondsSinceEpoch);
+  std::stringstream ss;
+  ss << std::put_time(std::gmtime(&time), "%Y-%m-%d %H:%M:%S");
+  return ss.str();
+}
+
 int main() {
-  auto fileLogger = LoggerFactory::createLogger(LoggerFactory::FILE);
+  auto fileLogger = LoggerFactory::createLogger(LoggerType::FILE, "log.txt");
   fileLogger->logMessage("This is a file logging message.");
 
-  auto databaseLogger = LoggerFactory::createLogger(LoggerFactory::DATABASE);
+  auto databaseLogger = LoggerFactory::createLogger(LoggerType::DATABASE);
   databaseLogger->logMessage("This is a database logging message.");
 
-  auto networkLogger = LoggerFactory::createLogger(LoggerFactory::NETWORK);
+  auto networkLogger = LoggerFactory::createLogger(LoggerType::NETWORK);
   networkLogger->logMessage("This is a network logging message.");
 
   return 0;

@@ -26,20 +26,49 @@ OrderException, который наследуется от std::exception.
 */
 
 #include <iostream>
-#include <exception>
+#include <stdexcept>
 #include <string>
 
-int main() {
-  try {
-    processOrder(-99, 12.0);
-  } catch (const OrderException& e) {
-    std::cout << "исключение: " << e.what() << "\nкод ошибки: " << e.getErrorCode() << std::endl;
-  }
+class OrderException : public std::exception {
+public:
+    explicit OrderException(const std::string& message, int errorCode)
+        : msg_(message), code_(errorCode) {}
 
-  try {
-    processOrder(10, 5.0);
-  } catch (const OrderException& e) {
-    std::cout << "исключение: " << e.what() << "\nкод ошибки: " << e.getErrorCode() << std::endl;
-  }
-  return 0;
+    const char* what() const noexcept override {
+        return msg_.c_str();
+    }
+
+    int getErrorCode() const noexcept {
+        return code_;
+    }
+
+private:
+    std::string msg_;
+    int code_;
+};
+
+void processOrder(int quantity, double price) {
+    if (quantity < 0) {
+        throw OrderException("Negative quantity is not allowed", 1);
+    }
+    if (price < 10.0) {
+        throw OrderException("Price is below the minimum allowed", 2);
+    }
+    std::cout << "Order processed successfully\n";
+}
+
+int main() {
+    try {
+        processOrder(-99, 12.0);
+    } catch (const OrderException& e) {
+        std::cout << "Exception: " << e.what() << "\nError code: " << e.getErrorCode() << std::endl;
+    }
+
+    try {
+        processOrder(10, 5.0);
+    } catch (const OrderException& e) {
+        std::cout << "Exception: " << e.what() << "\nError code: " << e.getErrorCode() << std::endl;
+    }
+
+    return 0;
 }

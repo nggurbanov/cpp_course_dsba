@@ -1,9 +1,3 @@
-
-#include <iostream>
-#include <string>
-#include <vector>
-using namespace std;
-
 // User class: The base class from which the
 // all other classes are inherited. Includes
 // basic information about the user (for example, name).
@@ -27,69 +21,87 @@ using namespace std;
 //Administrator. Every class must provide a method
 // accessResources() demonstrating the user's access level.
 
-class User {
- protected:
-  string name;
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
 
- public:
-  static int count;
-  User(string name) : name(name) { count++; }
-  virtual void accessResources() const {
-    cout << name << " has basic user access." << endl;
-  }
-  virtual ~User() {}
+class User {
+protected:
+    string name;
+
+public:
+    static int count;
+    User(string name) : name(name) { count++; }
+    virtual void accessResources() const {
+        cout << name << " has basic user access." << endl;
+    }
+    virtual ~User() {}
 };
 int User::count = 0;
-class Employee : public User {
- public:
-  Employee(string name) : User(name) { }
-  void accessResources() const {
-    cout << name << " has basic employee access." << endl;
-  }
-  virtual ~Employee() {}
+
+// Employee class derived from User using virtual inheritance
+class Employee : virtual public User {
+public:
+    Employee(string name) : User(name) {}
+    void accessResources() const override {
+        cout << name << " has basic employee access." << endl;
+    }
+    virtual ~Employee() {}
 };
 
-class Manager : public User{
- public:
-  Manager(string name) : User(name) { }
-  void accessResources() const {
-    cout << name << " has basic manager access." << endl;
-  }
-  virtual ~Manager() {}
+// Manager class derived from User using virtual inheritance
+class Manager : virtual public User {
+public:
+    Manager(string name) : User(name) {}
+    void accessResources() const override {
+        cout << name << " has basic manager access." << endl;
+    }
+    virtual ~Manager() {}
 };
 
-class Administrator : public User{
- public:
-  Administrator(string name) : User(name) { }
-  void accessResources() const {
-    cout << name << " has basic administrator access." << endl;
-  }
-  virtual ~Administrator() {}
+// Administrator class derived from Employee and Manager using virtual inheritance
+class Administrator : public Employee, public Manager {
+public:
+    Administrator(string name) : User(name), Employee(name), Manager(name) {}
+    void accessResources() const override {
+        cout << name << " has administrator access." << endl;
+    }
+    virtual ~Administrator() {}
 };
 
-std::string generateName() {
-  size_t size = rand() % 7 + 3; // 3 до 9 букв
-  std::string name = "";
-  for (int i = 0; i < size; ++i) {
-    name += char(rand() % 26 + 'a');
-  }
-  return name;
+string generateName() {
+    size_t size = rand() % 7 + 3; // 3 to 9 letters
+    string name = "";
+    for (int i = 0; i < size; ++i) {
+        name += char(rand() % 26 + 'a');
+    }
+    return name;
 }
 
 int main() {
-  std::cout << User::count << '\n';
-  std::vector<User*> v;
-  for (int i = 0; i < 10; ++i) {
-    int num = rand() % 3;
-    if (num == 0) {
-      v.push_back(new Employee(generateName()));
-    } else if (num == 1) {
-      v.push_back(new Administrator(generateName()));
-    } else if (num == 2) {
-      v.push_back(new Manager(generateName()));
+    srand(time(0));
+    cout << User::count << '\n';
+    vector<User*> v;
+    for (int i = 0; i < 10; ++i) {
+        int num = rand() % 3;
+        if (num == 0) {
+            v.push_back(new Employee(generateName()));
+        } else if (num == 1) {
+            v.push_back(new Administrator(generateName()));
+        } else if (num == 2) {
+            v.push_back(new Manager(generateName()));
+        }
+        v[i]->accessResources();
     }
-    v[i]->accessResources();
-  }
-  std::cout << User::count << '\n';
-  return 0;
+    cout << User::count << '\n';
+
+    // Free memory
+    for (User* user : v) {
+        delete user;
+    }
+
+    return 0;
 }

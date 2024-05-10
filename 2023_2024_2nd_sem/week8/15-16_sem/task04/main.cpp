@@ -38,27 +38,64 @@ Ensure error handling for file input/output operations and dictionary operations
 
 // Function to load dictionary from a file
 void loadDictionary(const std::string& filename, std::map<std::string, std::string>& dictionary) {
-    
+    std::ifstream infile(filename);
+    if (infile.is_open()) {
+        std::string term, definition;
+        while (std::getline(infile, term, '\t') && std::getline(infile, definition)) {
+            dictionary[term] = definition;
+        }
+        infile.close();
+    } else {
+        std::cerr << "Unable to open file: " << filename << std::endl;
+    }
 }
 
 // Function to display definition of a term
 void lookupTerm(const std::string& term, const std::map<std::string, std::string>& dictionary) {
-    
+    auto it = dictionary.find(term);
+    if (it != dictionary.end()) {
+        std::cout << "Definition of " << term << ":\n" << it->second << std::endl;
+    } else {
+        std::cout << "Term not found in the dictionary." << std::endl;
+    }
 }
 
 // Function to add a new term-definition pair to the dictionary
 void addTerm(std::map<std::string, std::string>& dictionary) {
-    
+    std::string term, definition;
+    std::cout << "Enter the term and its definition (separated by a '|' character): ";
+    std::getline(std::cin >> std::ws, term, '|');
+    std::getline(std::cin, definition);
+
+    if (dictionary.find(term) == dictionary.end()) {
+        dictionary[term] = definition;
+        std::cout << "Term added to the dictionary." << std::endl;
+    } else {
+        std::cout << "Term already exists in the dictionary. Please use the 'modify' option to update the definition." << std::endl;
+    }
 }
 
 // Function to delete a term from the dictionary
 void deleteTerm(const std::string& term, std::map<std::string, std::string>& dictionary) {
-    
+    if (dictionary.find(term) != dictionary.end()) {
+        dictionary.erase(term);
+        std::cout << "Term deleted from the dictionary." << std::endl;
+    } else {
+        std::cout << "Term not found in the dictionary." << std::endl;
+    }
 }
 
 // Function to save dictionary to a file
 void saveDictionary(const std::string& filename, const std::map<std::string, std::string>& dictionary) {
-    
+    std::ofstream outfile(filename);
+    if (outfile.is_open()) {
+        for (const auto& entry : dictionary) {
+            outfile << entry.first << '\t' << entry.second << '\n';
+        }
+        outfile.close();
+    } else {
+        std::cerr << "Unable to open file: " << filename << std::endl;
+    }
 }
 
 int main() {
@@ -106,3 +143,4 @@ int main() {
 
     return 0;
 }
+

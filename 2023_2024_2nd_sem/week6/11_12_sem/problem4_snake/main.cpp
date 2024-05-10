@@ -17,7 +17,28 @@
 #include <iostream>
 #include <sstream> 
 
-void countFileStatistics(const std::string& filePath);
+void countFileStatistics(const std::string& filePath) {
+    std::ifstream inputFile(filePath);
+    int n;
+    inputFile >> n;
+    inputFile.close();
+
+    std::ofstream outputFile("output.txt");
+
+    int count = 1;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (i % 2 == 0) {
+                outputFile << count++ << " ";
+            } else {
+                outputFile << n * n - count + 1 << " ";
+                count++;
+            }
+        }
+        outputFile << "\n";
+    }
+    outputFile.close();
+}
 
 int main() {
     countFileStatistics("file.txt");
